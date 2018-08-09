@@ -1,4 +1,5 @@
 import json
+import requests
 
 def processRequest(req):
     print("Request:")
