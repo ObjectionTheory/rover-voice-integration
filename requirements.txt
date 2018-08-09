@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 adium-theme-ubuntu==0.3.4
 apiai==1.2.3
 astroid==1.6.5
@@ -79,3 +80,6 @@ virtualenvwrapper==4.8.2
 Werkzeug==0.14.1
 wrapt==1.10.11
 xlib==0.21
+=======
+Flask
+>>>>>>> b21ae8f7b506372b7f719c96091f41ca467cac5b
