@@ -21,6 +21,7 @@ def webhook():
     print("Break1")
     res = webhooks.processRequest(req)
     print("Break3")
+    print(flask.jsonify(res))
     return flask.jsonify(res)
     
 
