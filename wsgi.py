@@ -3,6 +3,7 @@ import webhooks
 
 application = flask.Flask(__name__)
 
+
 @application.route('/')
 def get_status():
     print("Hello? Can anyone hear me?")
@@ -17,9 +18,9 @@ def webhook():
     print(json.dumps(req, indent=4))
     
     print("Break1")
-    #res = webhooks.processRequest(req)
+    res = webhooks.processRequest(req)
     print("Break3")
-    return flask.jsonify(req)
+    return flask.jsonify(res)
     
 
 if __name__ == '__main__':
