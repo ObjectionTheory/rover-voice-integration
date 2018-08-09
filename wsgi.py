@@ -53,7 +53,7 @@ def processRequest(req):
             elif duration.get("unit") == "min":
                 travelTime = duration.get("amount") * 60
         
-        rovers[roverid].updateData((255,255):travelTime)
+        rovers[roverid].updateData("{}:{}".format((255,255), travelTime))
 
         text = "Sallying forth!"
         
