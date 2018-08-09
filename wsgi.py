@@ -12,7 +12,7 @@ rovers = {1: Rover(1)}
 @application.route('/')
 def get_status():
     print("Hello? Can anyone hear me?")
-    return "Hello, I am running..." + time.time()
+    return "Hello, I am running...:{}".format(time.time())
 
 
 

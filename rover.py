@@ -9,7 +9,7 @@ class Rover:
         self.postData(self)
 
     def postData(self):
-        return "Rover" + self.id + ":" + self.currentInstruction
+        return "Rover{}:{}".format(self.id, self.currentInstruction)
     
     def selfDestruct(self):
         del self
