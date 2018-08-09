@@ -1,6 +1,5 @@
 import flask
 import json
-import webhooks
 import requests
 import time
 from rover import Rover
