@@ -16,7 +16,7 @@ def getStatus():
     return "Hello, I am running...:{}".format(time.time())
 
 
-@application.route('/commands', methods=['POST'])
+@application.route('/commands', methods=['GET'])
 def returnCommand():
     global rovers
     req = flask.request.get_json(silent=True, force=True)
@@ -28,16 +28,14 @@ def returnCommand():
     return flask.jsonify(res)
     
 
-@application.route('/webhooks', methods=['GET'])
+@application.route('/webhooks', methods=['POST'])
 def webhook():
     
-    req = flask.request.args
-    if req["roverid"]:    
-        res = webhooks.processRequest(req)
+    req = flask.request.get_json(silent=True, force=True)
+    
+    res = webhooks.processRequest(req)
 
-        return flask.jsonify(res)
-    else:
-        return
+    return flask.jsonify(res)
 
 def processRequest(req):
     print("Request:")
