@@ -88,8 +88,8 @@ def move(left, right, req):
             travelTime = duration["amount"]
         elif duration["unit"] == "min":
             travelTime = duration["amount"] * 60
-    
     roverid = req["result"]["parameters"]["roverid"]
+        
     if roverid in rovers.keys():
         rovers[roverid].updateData(left, right, duration)
 
