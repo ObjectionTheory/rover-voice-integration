@@ -89,8 +89,10 @@ def move(left, right, req):
         elif duration["unit"] == "min":
             travelTime = duration["amount"] * 60
     roverid = req["result"]["parameters"]["roverid"]
+    print(roverid, rovers.keys())
         
     if roverid in rovers.keys():
+        print(roverid)
         rovers[roverid].updateData(left, right, duration)
 
 def speech(speech):
