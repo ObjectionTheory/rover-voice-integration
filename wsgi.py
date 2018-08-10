@@ -6,8 +6,7 @@ from rover import Rover
 
 application = flask.Flask(__name__)
 
-rovers = {1: Rover(1),
-        2: Rover(2)}
+rovers = {1: Rover(1)}
 
 
 @application.route('/')
@@ -19,10 +18,13 @@ def getStatus():
 @application.route('/commands', methods=['GET'])
 def returnCommand():
     global rovers
-    req = request.get_json()
+    req = flask.request.get_json()
     print(req)
 
     roverid = req["roverid"]
+
+    if roverid not in rovers.keys():
+        rovers[roverid] = Rover(roverid)
 
     res = rovers[roverid].postData()
 
@@ -34,7 +36,7 @@ def webhook():
     
     req = flask.request.get_json(silent=True, force=True)
     
-    res = webhooks.processRequest(req)
+    res = processRequest(req)
 
     return flask.jsonify(res)
 
@@ -42,13 +44,13 @@ def processRequest(req):
     print("Request:")
     print(json.dumps(req, indent=4))
 
-    intent = ["result"]["metadata"]["intentName"]
+    action = ["result"]["action"]
 
-    if intent == "Sally Forth!":
+    if action == "sallyForth!":
         move(255, 255, req)
         res = speech("Sallying forth!")
 
-    elif intent == "Turn!":
+    elif action == "turn":
         direction = req["result"]["parameters"]["direction"]
         if direction == "left":
             move(-255, 255, req)
@@ -57,9 +59,17 @@ def processRequest(req):
             move(255, -255, req)
             res = speech("Turning right!")
 
-    elif intent == "Retreat!":
+    elif action == "retreat":
         move(-255, -255, req)
         res = speech("Going back!")
+    
+    elif action == "halt":
+        move(0, 0, req)
+        res = speech("Stopping!")
+    
+    elif action == "numberOfRovers":
+        res = speech("There are " + str(len(rovers)) + " active.")
+        
 
     else:
         res = speech("Oops, I didn't get that...")
