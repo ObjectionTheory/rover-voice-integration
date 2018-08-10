@@ -29,6 +29,10 @@ def returnCommand():
 
     res = rovers[roverid].postData()
 
+    if req.get("kill"):
+        del rovers[roverid]
+        return
+
     return flask.jsonify(res)
     
 
