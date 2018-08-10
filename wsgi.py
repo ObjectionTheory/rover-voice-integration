@@ -12,16 +12,17 @@ rovers = {1: Rover(1)}
 @application.route('/')
 def getStatus():
     print("Hello? Can anyone hear me?")
-    return "Hello, I am running...:{}".format(time.time())
+    return "Hello, I am running...:"
 
 
 @application.route('/commands', methods=['GET'])
 def returnCommand():
     global rovers
-    req = flask.request.get_json()
+    
+    req = flask.request.args
     print(req)
 
-    roverid = req["roverid"]
+    roverid = int(req.get("roverid"))
 
     if roverid not in rovers.keys():
         rovers[roverid] = Rover(roverid)
