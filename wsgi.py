@@ -18,7 +18,7 @@ def getStatus():
 @application.route('/commands', methods=['GET'])
 def returnCommand():
     global rovers
-    
+
     req = flask.request.args
     print(req)
 
@@ -45,7 +45,7 @@ def processRequest(req):
     print("Request:")
     print(json.dumps(req, indent=4))
 
-    action = ["result"]["action"]
+    action = req["result"]["action"]
 
     if action == "sallyForth!":
         move(255, 255, req)
