@@ -47,7 +47,7 @@ def processRequest(req):
 
     action = req["result"]["action"]
 
-    if action == "sallyForth!":
+    if action == "sallyForth":
         move(255, 255, req)
         res = speech("Sallying forth!")
 
