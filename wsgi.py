@@ -93,7 +93,7 @@ def move(left, right, req):
         
     if roverid in rovers.keys():
         print(roverid)
-        rovers[roverid].updateData(left, right, duration)
+        rovers[roverid].updateData(left, right, travelTime)
 
 def speech(speech):
     return {
