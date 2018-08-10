@@ -91,7 +91,7 @@ def move(left, right, req):
     roverid = req["result"]["parameters"]["roverid"]
     print(roverid, rovers.keys())
         
-    if roverid in rovers.keys():
+    if int(roverid) in rovers.keys():
         print(roverid)
         rovers[roverid].updateData(left, right, duration)
 
