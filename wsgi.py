@@ -19,7 +19,7 @@ def getStatus():
 @application.route('/commands', methods=['GET'])
 def returnCommand():
     global rovers
-    req = flask.request.get_json(silent=True, force=True)
+    req = flask.request.args
     print(req)
 
     roverid = req["roverid"]
