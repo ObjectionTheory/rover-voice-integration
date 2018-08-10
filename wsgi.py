@@ -6,63 +6,82 @@ from rover import Rover
 
 application = flask.Flask(__name__)
 
-rovers = {1: Rover(1)}
+rovers = {1: Rover(1),
+        2: Rover(2)}
 
 
 @application.route('/')
-def get_status():
+def getStatus():
     print("Hello? Can anyone hear me?")
     return "Hello, I am running...:{}".format(time.time())
 
 
-
-'''
-@application.route('/commands')
-def display_commands():
-    commands = "\n".join([rover.postData for rover in rovers])
-    return commands
-'''
-@application.route('/webhooks', methods=['POST'])
-def webhook():
-    
+@application.route('/commands', methods=['POST'])
+def returnCommand():
+    global rovers
     req = flask.request.get_json(silent=True, force=True)
 
-    print("Request:")
-    print(json.dumps(req, indent=4))
-    
-    print("Break1")
-    res = webhooks.processRequest(req)
-    print("Break3")
-    print(flask.jsonify(res))
+    roverid = req["roverid"]
+
+    res = rovers[roverid].postData()
+
     return flask.jsonify(res)
+    
+
+@application.route('/webhooks', methods=['GET'])
+def webhook():
+    
+    req = flask.request.args
+    if req["roverid"]:    
+        res = webhooks.processRequest(req)
+
+        return flask.jsonify(res)
+    else:
+        return
 
 def processRequest(req):
     print("Request:")
     print(json.dumps(req, indent=4))
 
-    roverid = req.get("result").get("parameters").get("roverid")
+    intent = ["result"]["metadata"]["intentName"]
 
-    if req.get("result").get("metadata").get("intentName") == "Sally Forth!":
-        travelTime = 5
-        if len(req.get("result").get("parameters").get("duration")) > 1:
-            duration = req.get("result").get("parameters").get("duration")
-       
-            if duration.get("unit") == "s":
-                travelTime = duration.get("amount")
-            elif duration.get("unit") == "min":
-                travelTime = duration.get("amount") * 60
-        
-        rovers[roverid].updateData("{}:{}".format((255,255), travelTime))
+    if intent == "Sally Forth!":
+        move(255, 255, req)
+        res = speech("Sallying forth!")
 
-        text = "Sallying forth!"
-        
-        print("Yeet")
-        res = speech(text)
+    elif intent == "Turn!":
+        direction = req["result"]["parameters"]["direction"]
+        if direction == "left":
+            move(-255, 255, req)
+            res = speech("Turning left!")
+        elif direction == "right":
+            move(255, -255, req)
+            res = speech("Turning right!")
+
+    elif intent == "Retreat!":
+        move(-255, -255, req)
+        res = speech("Going back!")
+
     else:
         res = speech("Oops, I didn't get that...")
 
-    print(res)
     return res
+
+def move(left, right, req):
+    global rovers
+    travelTime = 5
+
+    if len(req["result"]["parameters"]["duration"]) > 1:
+        duration = req["result"]["parameters"]["duration"]
+    
+        if duration["unit"] == "s":
+            travelTime = duration["amount"]
+        elif duration["unit"] == "min":
+            travelTime = duration["amount"] * 60
+    
+    roverid = req["result"]["parameters"]["roverid"]
+    if roverid in rovers.keys():
+        rovers[roverid].updateData(left, right, duration)
 
 def speech(speech):
     return {
