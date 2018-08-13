@@ -73,8 +73,15 @@ def processRequest(req):
         res = speech("Stopping!")
     
     elif action == "numberOfRovers":
-        res = speech("There are " + str(len(rovers)) + " active.")
+        res = speech("There are " + str(len(rovers)) + " connected to the server.")
+    
+    elif action == "roversActive":
+        activeRovers = 0
+        for rover in rovers.values():
+            if rover.isMoving():
+                activeRovers += 1
         
+        res = speech("There are " + str(activeRovers) + " rovers moving at the moment.")
 
     else:
         res = speech("Oops, I didn't get that...")

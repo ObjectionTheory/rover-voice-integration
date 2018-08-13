@@ -8,6 +8,11 @@ class Rover:
         self.left = left
         self.right = right
         self.duration = duration
+
+    def isMoving(self):
+        if self.left != 0 and self.right != 0:
+            return True
+        return False
     
     def reset(self):
         self.left = 0
