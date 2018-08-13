@@ -78,7 +78,7 @@ def processRequest(req):
         else:
             res = speech("There are " + str(len(rovers)) + " connected to the server.")
     
-    elif action == "roversActive":
+    elif action == "activeRovers":
         activeRovers = 0
         for rover in rovers.values():
             if rover.isMoving():
