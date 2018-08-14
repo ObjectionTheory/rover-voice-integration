@@ -14,6 +14,25 @@ def getStatus():
     print("Hello? Can anyone hear me?")
     return "Hello, I am running...:"
 
+@application.route('/control', methods=['GET'])
+def controller():
+    global rovers
+    req = flask.request.args
+    
+    roverid = int(req.get("roverid"))
+    if roverid not in rovers.keys():
+        rovers[roverid] = Rover(roverid)
+
+    rovers[roverid].updateData(
+        req.get("left"),
+         req.get("right"),
+          req.get("duration")
+    )
+
+    res = rovers[roverid].postData()
+
+    return flask.jsonify(res)
+
 
 @application.route('/commands', methods=['GET'])
 def returnCommand():
@@ -52,24 +71,24 @@ def processRequest(req):
     action = req["result"]["action"]
 
     if action == "sallyForth":
-        move(255, 255, req)
+        moveFromSpeech(255, 255, req)
         res = speech("Sallying forth!")
 
     elif action == "turn":
         direction = req["result"]["parameters"]["direction"]
         if direction == "left":
-            move(-255, 255, req)
+            moveFromSpeech(-255, 255, req)
             res = speech("Turning left!")
         elif direction == "right":
-            move(255, -255, req)
+            moveFromSpeech(255, -255, req)
             res = speech("Turning right!")
 
     elif action == "retreat":
-        move(-255, -255, req)
+        moveFromSpeech(-255, -255, req)
         res = speech("Going back!")
     
     elif action == "halt":
-        move(0, 0, req)
+        moveFromSpeech(0, 0, req)
         res = speech("Stopping!")
     
     elif action == "numberOfRovers":
@@ -101,7 +120,7 @@ def processRequest(req):
 
     return res
 
-def move(left, right, req):
+def moveFromSpeech(left, right, req):
     global rovers
     travelTime = 5
 
