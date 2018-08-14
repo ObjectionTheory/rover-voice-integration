@@ -25,8 +25,8 @@ def controller():
 
     rovers[roverid].updateData(
         req.get("left"),
-         req.get("right"),
-          req.get("duration")
+        req.get("right"),
+        req.get("duration")
     )
 
     res = rovers[roverid].postData()
@@ -34,7 +34,7 @@ def controller():
     return flask.jsonify(res)
 
 
-@application.route('/commands', methods=['GET'])
+@application.route('/getcommands', methods=['GET'])
 def returnCommand():
     global rovers
 
@@ -42,6 +42,7 @@ def returnCommand():
     print(req)
 
     roverid = int(req.get("roverid"))
+    print(rovers[roverid].postData()])
 
     if roverid not in rovers.keys():
         rovers[roverid] = Rover(roverid)
