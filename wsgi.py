@@ -29,9 +29,8 @@ def controller():
         req.get("duration")
     )
 
-    res = rovers[roverid].postData()
-
-    return flask.jsonify(res)
+    res = "Moved!"
+    return res
 
 
 @application.route('/getcommands', methods=['GET'])
