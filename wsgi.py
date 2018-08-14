@@ -41,7 +41,7 @@ def returnCommand():
     print(req)
 
     roverid = int(req.get("roverid"))
-    print(rovers[roverid].postData())
+    print(rovers[roverid].postData(reset=False))
 
     if roverid not in rovers.keys():
         rovers[roverid] = Rover(roverid)

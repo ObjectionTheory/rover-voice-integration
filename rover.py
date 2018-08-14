@@ -19,12 +19,14 @@ class Rover:
         self.right = 0
         self.duration = 0
 
-    def postData(self):
+    def postData(self, reset=True):
         res = {
             "roverid": self.id,
             "left": self.left,
             "right": self.right,
             "duration": self.duration
         }
-        self.reset()
+        if reset:
+            self.reset()
+            
         return res
