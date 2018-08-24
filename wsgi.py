@@ -135,6 +135,7 @@ def processRequest(req):
     return res
 
 def assignCommand(req, left=0, right=0, claw=0):
+    print("Something dodgy is happening")
     global rovers, currentRover
     travelTime = 5
 
