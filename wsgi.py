@@ -105,14 +105,17 @@ def processRequest(req):
     elif action == "lightPreset":
         lights = req.get("result").get("parameters").get("lightSel")
         rovers[currentRover].lights = int(lights) + 1
+        res = speech("Lights set to preset "+ str(int(lights) + 1) + ".")
     
     elif action == "clearLights":
         rovers[currentRover].lights = 1
+        res = speech("Lights cleared.")
 
     elif action == "setLights":
         hue = req.get("results").get("parameters").get("hue")
         brightness = req.get("results").get("parameters").get("brightness")
         rovers[currentRover].setLights(hue, brightness)
+        res = speech("Lights configured!") 
 
     elif action == "setRover":
         currentRover = req.get("result").get("parameters").get("roverid")
