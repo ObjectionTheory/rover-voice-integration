@@ -1,6 +1,7 @@
 
 class Rover:
     def __init__(self, id):
+        print("rover started")
         self.id = id
         self.claw = 0
         self.reset()
@@ -10,6 +11,7 @@ class Rover:
         self.right = right
         self.duration = duration
         self.claw = claw
+        pritn(self.claw)
 
     def isMoving(self):
         if self.left != 0 and self.right != 0:
@@ -20,7 +22,6 @@ class Rover:
         self.left = 0
         self.right = 0
         self.duration = 0
-        
 
     def postData(self, reset=True):
         res = {

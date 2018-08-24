@@ -27,7 +27,8 @@ def controller():
     rovers[roverid].updateData(
         req.get("left"),
         req.get("right"),
-        req.get("duration")
+        req.get("duration"),
+        req.get("claw")
     )
 
     res = "Moved!"
