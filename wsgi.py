@@ -104,7 +104,7 @@ def processRequest(req):
 
     elif action == "lightPreset":
         lights = req.get("result").get("parameters").get("lightSel")
-        rovers[currentRover].lights = lights + 1
+        rovers[currentRover].lights = int(lights) + 1
     
     elif action == "clearLights":
         rovers[currentRover].lights = 1
