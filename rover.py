@@ -2,6 +2,7 @@
 class Rover:
     def __init__(self, id):
         self.id = id
+        self.claw = 0
         self.reset()
     
     def updateData(self, left, right, duration, claw):
@@ -26,7 +27,7 @@ class Rover:
             "roverid": self.id,
             "left": self.left,
             "right": self.right,
-            "duration": self.duration,
+            "duration": self.duration
             "claw": self.claw
         }
         if reset:
