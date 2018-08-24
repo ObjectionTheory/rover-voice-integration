@@ -66,6 +66,7 @@ def webhook():
     return flask.jsonify(res)
 
 def processRequest(req):
+    global currentRover
     print("Request:")
     print(json.dumps(req, indent=4))
 
@@ -94,9 +95,15 @@ def processRequest(req):
     
     elif action == "openClaw":
         assignCommand(req, claw=0)
+        res = speech("Opening the claw!")
     
     elif action == "closeClaw":
         assignCommand(req, claw=1)
+        res = speech("Closing the claw!")
+
+    elif action == "setRover":
+        currentRover = req.get("result").get("parameters").get("roverid")
+        res = speech("Set rover " + str(currentRover) + " to be active!")
     
     elif action == "numberOfRovers":
         if len(rovers) == 1:
