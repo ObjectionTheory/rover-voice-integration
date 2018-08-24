@@ -134,7 +134,7 @@ def assignCommand(req, left=0, right=0, claw=0):
     roverid = currentRover
 
     if len(req["result"]["parameters"]["duration"]) > 1:
-        duration = req["result"]["parameters"]["duration"]
+        duration = req["result".get("parameters").get("duration")
     
         if duration["unit"] == "s":
             travelTime = duration["amount"]
