@@ -6,7 +6,7 @@ from rover import Rover
 
 application = flask.Flask(__name__)
 
-#rovers = {1: Rover(1)}
+rovers = {1: Rover(1)}
 currentRover = 1
 
 
