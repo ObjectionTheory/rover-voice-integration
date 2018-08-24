@@ -67,43 +67,58 @@ def webhook():
     return flask.jsonify(res)
 
 def processRequest(req):
-    global currentRover
+    global rovers, currentRover
     print("Request:")
     print(json.dumps(req, indent=4))
 
     action = req["result"]["action"]
 
     if action == "sallyForth":
-        assignCommand(req, 255, 255)
+        moveRover(req, 255, 255)
         res = speech("Sallying forth!")
 
     elif action == "turn":
         direction = req["result"]["parameters"]["direction"]
         if direction == "left":
-            assignCommand(req, -255, 255)
+            moveRover(req, -255, 255)
             res = speech("Turning left!")
         elif direction == "right":
-            assignCommand(req, 255, -255)
+            moveRover(req, 255, -255)
             res = speech("Turning right!")
 
     elif action == "retreat":
-        assignCommand(req, -255, -255)
+        moveRover(req, -255, -255)
         res = speech("Going back!")
     
     elif action == "halt":
-        assignCommand(req, 0, 0)
+        moveRover(req, 0, 0)
         res = speech("Stopping!")
     
     elif action == "openClaw":
-        assignCommand(req, claw=0)
+        rovers[currentRover].claw = 0
         res = speech("Opening the claw!")
     
     elif action == "closeClaw":
-        assignCommand(req, claw=1)
+        rovers[currentRover].claw = 1
         res = speech("Closing the claw!")
+
+    elif action == "lightPreset":
+        lights = req.get("result").get("parameters").get("lightSel")
+        rovers[currentRover].lights = lights + 1
+    
+    elif action == "clearLights":
+        rovers[currentRover].lights = 1
+
+    elif action == "setLights":
+        hue = req.get("results").get("parameters").get("hue")
+        brightness = req.get("results").get("parameters").get("brightness")
+        rovers[currentRover].setLights(hue, brightness)
 
     elif action == "setRover":
         currentRover = req.get("result").get("parameters").get("roverid")
+        if currentRover not in rovers:
+            rovers[currentRover] = Rover(currentRover)
+        print(rovers)
         res = speech("Set rover " + str(currentRover) + " to be active!")
     
     elif action == "numberOfRovers":
@@ -135,14 +150,9 @@ def processRequest(req):
 
     return res
 
-def assignCommand(req, left=0, right=0, claw=0):
-    print("Something dodgy is happening")
+def moveRover(req, left, right):
     global rovers, currentRover
-    if left == 0 and right == 0:
-        travelTime = 0
-    else:
-        travelTime = 2
-
+    travelTime = 2
     roverid = currentRover
 
     if req["result"]["parameters"].get("duration"):
@@ -157,7 +167,7 @@ def assignCommand(req, left=0, right=0, claw=0):
         
     if roverid in rovers.keys():
         print(roverid)
-        rovers[roverid].updateData(left, right, travelTime, claw)
+        rovers[roverid].updateData(left, right, travelTime)
 
 def speech(speech):
     return {
