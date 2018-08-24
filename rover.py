@@ -27,7 +27,7 @@ class Rover:
             "roverid": self.id,
             "left": self.left,
             "right": self.right,
-            "duration": self.duration
+            "duration": self.duration,
             "claw": self.claw
         }
         if reset:
