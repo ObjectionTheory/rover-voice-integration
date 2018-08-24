@@ -19,6 +19,7 @@ class Rover:
         self.left = 0
         self.right = 0
         self.duration = 0
+        self.claw = 0
 
     def postData(self, reset=True):
         res = {
