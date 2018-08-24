@@ -7,6 +7,7 @@ from rover import Rover
 application = flask.Flask(__name__)
 
 rovers = {1: Rover(1)}
+currentRover = 1
 
 
 @application.route('/')
@@ -71,25 +72,31 @@ def processRequest(req):
     action = req["result"]["action"]
 
     if action == "sallyForth":
-        moveFromSpeech(255, 255, req)
+        assignCommand(req, 255, 255)
         res = speech("Sallying forth!")
 
     elif action == "turn":
         direction = req["result"]["parameters"]["direction"]
         if direction == "left":
-            moveFromSpeech(-255, 255, req)
+            assignCommand(req, -255, 255)
             res = speech("Turning left!")
         elif direction == "right":
-            moveFromSpeech(255, -255, req)
+            assignCommand(req, 255, -255)
             res = speech("Turning right!")
 
     elif action == "retreat":
-        moveFromSpeech(-255, -255, req)
+        assignCommand(req, -255, -255)
         res = speech("Going back!")
     
     elif action == "halt":
-        moveFromSpeech(0, 0, req)
+        assignCommand(req, 0, 0)
         res = speech("Stopping!")
+    
+    elif action == "openClaw":
+        assignCommand(req, claw=0)
+    
+    elif action == "closeClaw":
+        assignCommand(req, claw=1)
     
     elif action == "numberOfRovers":
         if len(rovers) == 1:
@@ -120,9 +127,11 @@ def processRequest(req):
 
     return res
 
-def moveFromSpeech(left, right, req):
-    global rovers
+def assignCommand(req, left=0, right=0, claw=0):
+    global rovers, currentRover
     travelTime = 5
+
+    roverid = currentRover
 
     if len(req["result"]["parameters"]["duration"]) > 1:
         duration = req["result"]["parameters"]["duration"]
@@ -131,12 +140,12 @@ def moveFromSpeech(left, right, req):
             travelTime = duration["amount"]
         elif duration["unit"] == "min":
             travelTime = duration["amount"] * 60
-    roverid = int(req["result"]["parameters"]["roverid"])
+    
     print(roverid, rovers.keys())
         
     if roverid in rovers.keys():
         print(roverid)
-        rovers[roverid].updateData(left, right, travelTime)
+        rovers[roverid].updateData(left, right, travelTime, claw)
 
 def speech(speech):
     return {

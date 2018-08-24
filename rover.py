@@ -4,10 +4,11 @@ class Rover:
         self.id = id
         self.reset()
     
-    def updateData(self, left, right, duration):
+    def updateData(self, left, right, duration, claw):
         self.left = left
         self.right = right
         self.duration = duration
+        self.claw = claw
 
     def isMoving(self):
         if self.left != 0 and self.right != 0:
@@ -24,9 +25,10 @@ class Rover:
             "roverid": self.id,
             "left": self.left,
             "right": self.right,
-            "duration": self.duration
+            "duration": self.duration,
+            "claw": self.claw
         }
         if reset:
             self.reset()
-            
+
         return res
