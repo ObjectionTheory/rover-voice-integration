@@ -11,7 +11,7 @@ class Rover:
         self.right = right
         self.duration = duration
         self.claw = claw
-        pritn(self.claw)
+        print(self.claw)
 
     def isMoving(self):
         if self.left != 0 and self.right != 0:

@@ -6,7 +6,7 @@ from rover import Rover
 
 application = flask.Flask(__name__)
 
-rovers = {1: Rover(1)}
+#rovers = {1: Rover(1)}
 currentRover = 1
 
 
@@ -138,7 +138,10 @@ def processRequest(req):
 def assignCommand(req, left=0, right=0, claw=0):
     print("Something dodgy is happening")
     global rovers, currentRover
-    travelTime = 5
+    if left == 0 and right == 0:
+        travelTime = 0
+    else:
+        travelTime = 2
 
     roverid = currentRover
 
