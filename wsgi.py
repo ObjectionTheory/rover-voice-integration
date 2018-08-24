@@ -5,7 +5,7 @@ import time
 from rover import Rover
 
 application = flask.Flask(__name__)
-
+print("Started")
 rovers = {1: Rover(1)}
 currentRover = 1
 
